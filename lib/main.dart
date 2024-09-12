@@ -18,7 +18,7 @@ class MainApp extends StatelessWidget {
           Theme.of(context).textTheme,
         ),
       ),
-      home: const home(),
+      home: const LandingPage(),
     );
   }
 }
