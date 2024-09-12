@@ -19,12 +19,14 @@ class _HomeState extends State<Home> {
   List<CategoryModel> categories = [];
   List<sliderModel> sliders = [];
   List<ArticalModel> articles = [];
+  bool _loading = true;
 
   int activeIndex = 0;
   @override
   void initState() {
     categories = getCategories();
     sliders = getSliders();
+    getNews();
     super.initState();
   }
 
@@ -32,6 +34,9 @@ class _HomeState extends State<Home> {
     News newsclass = News();
     await newsclass.getNews();
     articles = newsclass.news;
+    setState(() {
+      _loading = false;
+    });
   }
 
   @override
@@ -56,164 +61,117 @@ class _HomeState extends State<Home> {
         centerTitle: true,
         elevation: 0.0,
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(left: 10.0),
-                height: 70,
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: categories.length,
-                    itemBuilder: (context, index) {
-                      return CategoryTile(
-                        image: categories[index].image,
-                        categoryName: categories[index].categoryName,
-                      );
-                    }),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              const Padding(
-                padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: _loading
+          ? Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              child: Container(
+                child: Column(
                   children: [
-                    Text(
-                      "Breaking News!",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Container(
+                      margin: const EdgeInsets.only(left: 10.0),
+                      height: 70,
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: categories.length,
+                          itemBuilder: (context, index) {
+                            return CategoryTile(
+                              image: categories[index].image,
+                              categoryName: categories[index].categoryName,
+                            );
+                          }),
                     ),
-                    Text(
-                      "View all",
-                      style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.blue),
-                      textAlign: TextAlign.end,
+                    const SizedBox(
+                      height: 30,
                     ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              CarouselSlider.builder(
-                  itemCount: sliders.length,
-                  itemBuilder: (context, index, realIndex) {
-                    String? res = sliders[index].image;
-                    String? res1 = sliders[index].name;
-                    return buildImage(res!, index, res1!);
-                  },
-                  options: CarouselOptions(
-                      height: 200,
-                      autoPlay: true,
-                      enlargeCenterPage: true,
-                      enlargeStrategy: CenterPageEnlargeStrategy.height,
-                      onPageChanged: (index, reason) {
-                        setState(() {
-                          activeIndex = index;
-                        });
-                      })),
-              const SizedBox(height: 30.0),
-              Center(child: buildIndicator()),
-              const SizedBox(
-                height: 30,
-              ),
-              const Padding(
-                padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Trending News!",
-                      style: TextStyle(
-                          fontSize: 20.0, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      "View all",
-                      style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.blue),
-                      textAlign: TextAlign.end,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Material(
-                  color: Colors.blue.shade100,
-                  elevation: 3.0,
-                  borderRadius: BorderRadius.circular(10),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10.0, horizontal: 5.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.asset(
-                              'assets/images/sport.jpg',
-                              height: 120,
-                              width: 120,
-                              fit: BoxFit.cover,
+                    const Padding(
+                      padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Breaking News!",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                        ),
-                        const SizedBox(
-                          width: 8.0,
-                        ),
-                        Column(
-                          children: [
-                            Container(
-                              width: MediaQuery.of(context).size.width / 1.7,
-                              child: const Text(
-                                "Rui Costa Outsprints breakeaway to win stage 15",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 17.0,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 7.0,
-                            ),
-                            Container(
-                              width: MediaQuery.of(context).size.width / 1.7,
-                              child: const Text(
-                                "Then a final kick to beat lennard kamna",
-                                style: TextStyle(
-                                  color: Colors.black54,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 15.0,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                          Text(
+                            "View all",
+                            style: TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.blue),
+                            textAlign: TextAlign.end,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    CarouselSlider.builder(
+                        itemCount: sliders.length,
+                        itemBuilder: (context, index, realIndex) {
+                          String? res = sliders[index].image;
+                          String? res1 = sliders[index].name;
+                          return buildImage(res!, index, res1!);
+                        },
+                        options: CarouselOptions(
+                            height: 200,
+                            autoPlay: true,
+                            enlargeCenterPage: true,
+                            enlargeStrategy: CenterPageEnlargeStrategy.height,
+                            onPageChanged: (index, reason) {
+                              setState(() {
+                                activeIndex = index;
+                              });
+                            })),
+                    const SizedBox(height: 30.0),
+                    Center(child: buildIndicator()),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Trending News!",
+                            style: TextStyle(
+                                fontSize: 20.0, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "View all",
+                            style: TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.blue),
+                            textAlign: TextAlign.end,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: articles.length,
+                          itemBuilder: (context, index) {
+                            return BlogTile(
+                                desc: articles[index].description!,
+                                imageUrl: articles[index].url!,
+                                title: articles[index].title!);
+                          }),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 
@@ -297,6 +255,78 @@ class CategoryTile extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class BlogTile extends StatelessWidget {
+  String imageUrl, title, desc;
+  BlogTile({required this.desc, required this.title, required this.imageUrl});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {},
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        child: Material(
+          color: Colors.blue.shade100,
+          elevation: 3.0,
+          borderRadius: BorderRadius.circular(10),
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.network(
+                      imageUrl,
+                      height: 120,
+                      width: 120,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 8.0,
+                ),
+                Column(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width / 1.7,
+                      child: Text(
+                        title,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 17.0,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 7.0,
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width / 1.7,
+                      child: Text(
+                        desc,
+                        style: TextStyle(
+                          color: Colors.black54,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 15.0,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

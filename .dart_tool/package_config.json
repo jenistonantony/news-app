@@ -350,10 +350,10 @@
       "languageVersion": "3.4"
     }
   ],
-  "generated": "2024-09-12T12:54:53.501681Z",
+  "generated": "2024-09-12T13:58:14.005400Z",
   "generator": "pub",
   "generatorVersion": "3.4.4",
   "flutterRoot": "file:///C:/flutter",
-  "flutterVersion": "3.22.3",
+  "flutterVersion": "3.22.4-0.0.pre.1",
   "pubCache": "file:///C:/Users/anton/AppData/Local/Pub/Cache"
 }
