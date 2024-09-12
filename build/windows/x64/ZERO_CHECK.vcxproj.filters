@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="D:\Flutter Project\Flutter Tutorial\News App1\news_app\build\windows\x64\CMakeFiles\569228511cf5d741df259f991078beed\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{E5E2D654-2CED-3881-86AC-17BD0BFFC4A9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
